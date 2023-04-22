@@ -11,14 +11,14 @@ import Clarifai from 'clarifai';
 import './App.css';
 
 
-// const app = new Clarifai.App({
-//   apiKey: '7fdec79ebf9246a18e3514aa39c4f618'
-// });
+const app = new Clarifai.App({
+  apiKey: '7fdec79ebf9246a18e3514aa39c4f618'
+});
 
 const returnClarifaiOptions = (imageUrl) => {
 
     // Your PAT (Personal Access Token) can be found in the portal under Authentification
-      const PAT = 'af6896bec7c54735b5c4219cdec3977c';
+    const PAT = 'af6896bec7c54735b5c4219cdec3977c';
     // Specify the correct user_id/app_id pairings
     // Since you're making inferences outside your app's scope
     const USER_ID = 'alinalin';       
@@ -75,6 +75,16 @@ class App extends Component {
     }
   }
 
+loadUser = (data) => {
+    this.setState({user: {
+      id: data.id,
+      name: data.name,
+      email: data.email,
+      entries: data.entries,
+      joined: data.joined
+    }})
+  }
+
 calculateFaceLocation = (data) => {
   const clarifaiFace = data.outputs[0].data.regions[0].region_info.bounding_box
   const image = document.getElementById('inputImage');
@@ -93,13 +103,14 @@ displayFaceBox = (box) => {
 }
 
   onInputChange = (event) => {
-    this.setState({input:event.target.value});
+    this.setState({input: event.target.value});
   }
 
   onButtonSubmit = () => {
-   this.setState({imageUrl: this.state.input});
+    this.setState({imageUrl: this.state.input});
 
-  //app.models.predict('face-detection', this.state.input)
+
+  // app.models.predict('face-detection', this.state.input)
   fetch("https://api.clarifai.com/v2/models/" + 'face-detection' + "/outputs", returnClarifaiOptions(this.state.input))
   .then(response => response.json())
   .then(response => {
@@ -114,7 +125,7 @@ displayFaceBox = (box) => {
       })
         .then(response => response.json())
         .then(count => {
-          this.setState(Object.assign(this.state.user, { entries: count}))
+          this.setState(Object.assign(this.state.user, { entries: count }))
         })
 
     }
@@ -138,10 +149,13 @@ onRouteChange = (route) => {
       <div className="App">
         <ParticlesBg type="cobweb" num={200} bg={true} />
         <Navigation isSignedIn={this.state.isSignedIn} onRouteChange={this.onRouteChange}/>
-        { this.state.route === 'home' 
+        { route === 'home' 
           ? <div>
               <Logo /> 
-              <Rank />
+              <Rank 
+                name={this.state.user.name}
+                entries={this.state.user.entries}
+              />
               <ImageLinkForm
                 onInputChange={this.onInputChange}
                 onButtonSubmit={this.onButtonSubmit}/>
@@ -149,12 +163,13 @@ onRouteChange = (route) => {
             </div>
           : (
             this.state.route === 'signin' 
-              ? <Signin onRouteChange={this.onRouteChange}/>
-              : <Register onRouteChange={this.onRouteChange} />
+            ? <Signin loadUser={this.loadUser} onRouteChange={this.onRouteChange}/>
+            : <Register loadUser={this.loadUser} onRouteChange={this.onRouteChange}/>
             )
         }
         </div>
     )
   }
 }
+
 export default App;
