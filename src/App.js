@@ -18,7 +18,7 @@ const app = new Clarifai.App({
 const returnClarifaiOptions = (imageUrl) => {
 
     // Your PAT (Personal Access Token) can be found in the portal under Authentification
-      const PAT = 'af6896bec7c54735b5c4219cdec3977c';
+    const PAT = 'af6896bec7c54735b5c4219cdec3977c';
     // Specify the correct user_id/app_id pairings
     // Since you're making inferences outside your app's scope
     const USER_ID = 'alinalin';       
@@ -75,7 +75,11 @@ class App extends Component {
     }
   }
 
+<<<<<<< HEAD
   loadUser = (data) => {
+=======
+loadUser = (data) => {
+>>>>>>> origin/main
     this.setState({user: {
       id: data.id,
       name: data.name,
@@ -103,13 +107,18 @@ displayFaceBox = (box) => {
 }
 
   onInputChange = (event) => {
-    this.setState({input:event.target.value});
+    this.setState({input: event.target.value});
   }
 
   onButtonSubmit = () => {
-   this.setState({imageUrl: this.state.input});
+    this.setState({imageUrl: this.state.input});
 
+<<<<<<< HEAD
   app.models.predict('face-detection', this.state.input)
+=======
+
+  // app.models.predict('face-detection', this.state.input)
+>>>>>>> origin/main
   fetch("https://api.clarifai.com/v2/models/" + 'face-detection' + "/outputs", returnClarifaiOptions(this.state.input))
   .then(response => response.json())
   .then(response => {
@@ -124,7 +133,7 @@ displayFaceBox = (box) => {
       })
         .then(response => response.json())
         .then(count => {
-          this.setState(Object.assign(this.state.user, { entries: count}))
+          this.setState(Object.assign(this.state.user, { entries: count }))
         })
 
     }
@@ -148,10 +157,14 @@ onRouteChange = (route) => {
       <div className="App">
         <ParticlesBg type="cobweb" num={200} bg={true} />
         <Navigation isSignedIn={this.state.isSignedIn} onRouteChange={this.onRouteChange}/>
-        { this.state.route === 'home' 
+        { route === 'home' 
           ? <div>
               <Logo /> 
+<<<<<<< HEAD
               <Rank
+=======
+              <Rank 
+>>>>>>> origin/main
                 name={this.state.user.name}
                 entries={this.state.user.entries}
               />
@@ -170,4 +183,5 @@ onRouteChange = (route) => {
     )
   }
 }
+
 export default App;
