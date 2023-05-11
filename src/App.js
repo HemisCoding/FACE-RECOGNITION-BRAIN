@@ -56,30 +56,28 @@ return requestOptions;
 
 }
 
+const initialState = {
+  input: '',
+  imageUrl: '',
+  box: {},
+  route: 'signin',
+  isSignedIn: false,
+  user: {
+    id: '',
+    name: '',
+    email: '',
+    entries: 0,
+    joined: ''
+  }
+}
+
 class App extends Component {
   constructor() {
     super();
-    this.state = {
-      input: '',
-      imageUrl: '',
-      box: {},
-      route: 'signin',
-      isSignedIn: false,
-      user: {
-        id: '',
-        name: '',
-        email: '',
-        entries: 0,
-        joined: ''
-      }
-    }
+    this.state = initialState;
   }
 
-<<<<<<< HEAD
   loadUser = (data) => {
-=======
-loadUser = (data) => {
->>>>>>> origin/main
     this.setState({user: {
       id: data.id,
       name: data.name,
@@ -113,12 +111,7 @@ displayFaceBox = (box) => {
   onButtonSubmit = () => {
     this.setState({imageUrl: this.state.input});
 
-<<<<<<< HEAD
   app.models.predict('face-detection', this.state.input)
-=======
-
-  // app.models.predict('face-detection', this.state.input)
->>>>>>> origin/main
   fetch("https://api.clarifai.com/v2/models/" + 'face-detection' + "/outputs", returnClarifaiOptions(this.state.input))
   .then(response => response.json())
   .then(response => {
@@ -135,7 +128,7 @@ displayFaceBox = (box) => {
         .then(count => {
           this.setState(Object.assign(this.state.user, { entries: count }))
         })
-
+        .catch(console.log)
     }
     this.displayFaceBox(this.calculateFaceLocation(response))
   })
@@ -144,7 +137,7 @@ displayFaceBox = (box) => {
 
 onRouteChange = (route) => {
   if (route === 'signout') {
-    this.setState({isSignedIn: false})
+    this.setState(initialState)
   } else if (route === 'home') {
     this.setState({isSignedIn: true})
   } 
@@ -160,11 +153,7 @@ onRouteChange = (route) => {
         { route === 'home' 
           ? <div>
               <Logo /> 
-<<<<<<< HEAD
               <Rank
-=======
-              <Rank 
->>>>>>> origin/main
                 name={this.state.user.name}
                 entries={this.state.user.entries}
               />
