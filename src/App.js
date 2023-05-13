@@ -117,7 +117,7 @@ displayFaceBox = (box) => {
   .then(response => {
     console.log('hi', response)
     if (response) {
-      fetch('http://localhost:3000/image', {
+      fetch('https://backend-face-detection-hemiscoding.onrender.com/image', {
         method: 'put',
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({
